@@ -18,5 +18,4 @@ public class PartieSession implements PartieSessionRemote {
         return "This is My Session Bean";
     }
 
-    
 }
