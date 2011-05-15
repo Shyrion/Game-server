@@ -29,8 +29,8 @@ public class PartieSession implements PartieSessionRemote {
 
     public Gamer searchForGamer(String id){
         
-        Gamer cust = (Gamer)em.find(Gamer.class, id);
-        return cust;
+        Gamer gamer = (Gamer)em.find(Gamer.class, id);
+        return gamer;
     }
     
     
@@ -41,6 +41,7 @@ public class PartieSession implements PartieSessionRemote {
         em.remove(mergedObj);
     }
     
+    @Override
     public void persist(Object obj){
         em.persist(obj);
     }
@@ -51,6 +52,7 @@ public class PartieSession implements PartieSessionRemote {
         return gamers;
         
     }
+    
     /*
     public List findCustomerByFirstName(String firstName){
         List customers = em.createNamedQuery("findCustomerByFirstName").setParameter("firstName", firstName).getResultList();
