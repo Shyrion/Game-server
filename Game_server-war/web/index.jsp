@@ -1,7 +1,7 @@
 <%-- 
     Document   : index
     Created on : 28 avr. 2011, 12:10:24
-    Author     : shyrion
+    Author     : Alexandre Bourdin & Jeremy Gabriele
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -18,8 +18,7 @@
         <p>If you want, you can either :</p>
         <ul>
             <li><a href="login.jsp">login</a></li>
-            <li><a href="login.jsp">login</a></li>
-            <li><a href="login.jsp">login</a></li>
+            <li><a href="register.jsp">register</a></li>
         </ul>
 
         <%

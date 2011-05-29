@@ -10,7 +10,7 @@ import persistence.Gamer;
 
 /**
  *
- * @author shyrion
+ * @author: Alexandre Bourdin & Jeremy Gabriele
  */
 
 @Remote
@@ -23,4 +23,6 @@ public interface PartieSessionRemote {
     public void persist(Object obj);
     
     public List findAllGamers();
+    
+    public Gamer findGamerByLoginAndPassword(String log, String pass);
 }

@@ -9,13 +9,14 @@ import java.util.List;
 import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
-import javax.persistence.EntityManager;
+import javax.persistence.*;
 import persistence.Gamer;
 
 /**
  *
- * @author shyrion
+ * @author: Alexandre Bourdin & Jeremy Gabriele
  */
+
 @Stateful
 public class PartieSession implements PartieSessionRemote {
     
@@ -44,6 +45,13 @@ public class PartieSession implements PartieSessionRemote {
     @Override
     public void persist(Object obj){
         em.persist(obj);
+    }
+    
+    public Gamer findGamerByLoginAndPassword(String login, String password){
+        Gamer gamer=null;
+        List res = em.createNamedQuery("findGamerByLogin").setParameter("login", login).setParameter("password", password).getResultList();
+        gamer = (Gamer) res.get(0);
+        return gamer;
     }
     
     public List findAllGamers(){
