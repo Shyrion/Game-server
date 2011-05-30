@@ -21,9 +21,9 @@
 
 <%!
 
-    @Resource(mappedName = "jms/ConnectionFactConnectionory")
+    //@Resource(mappedName = "jms/ConnectionFactory")
     private static ConnectionFactory connectionFactory;
-    @Resource(mappedName = "jms/Topic")
+    //@Resource(mappedName = "jms/Topic")
     private static Topic topic;
 
     Connection connection = null;
@@ -35,8 +35,8 @@
         try {
 
             InitialContext ic = new InitialContext();
-            //connectionFactory = (ConnectionFactory) ic.lookup("jms/ConnectionFactory"); // Lookup fail !!!
-            //topic = (Topic) ic.lookup("jms/Topic");
+            connectionFactory = (ConnectionFactory) ic.lookup("jms/ConnectionFactory"); // Lookup fail !!!
+            topic = (Topic) ic.lookup("jms/Topic");
 
             connection = connectionFactory.createConnection();
             jmsSession = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
@@ -99,7 +99,7 @@
                 //Gamer gamer = partieSession.findGamerByLoginAndPassword(login, pwd);
                 
                 %>
-                <%=connectionFactory%>
+                <%=topic%>
                 <%
                 
                 textMessage = jmsSession.createTextMessage();

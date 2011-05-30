@@ -56,10 +56,10 @@
                             Object o = ic.lookup("java:global/Game_server/Game_server-ejb/PartieSession!partie.PartieSessionRemote");
                             PartieSessionRemote partieSession = (PartieSessionRemote) o;
                             %>
-                            <%=o%>
+                            <%= o %>
                             <%
                             Gamer gamer = new Gamer(login, pwd);
-                            //partieSession.persist(gamer);
+                            partieSession.persist(gamer);
                     %>
                     <p>
                         A new gamer has been added : 
@@ -71,7 +71,7 @@
                             out.println("Create Gamer Failed : " + e.toString()); 
                         }
                   } else {
-                    err = "The 'Password' and Confirm Password' fields must match.";
+                    err = "The 'Password' and 'Confirm Password' fields must match.";
                   }
                } else {
                     err = "Please enter a password to protect your account.";

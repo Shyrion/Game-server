@@ -5,7 +5,7 @@
 package partie;
 
 import java.util.List;
-import javax.ejb.Remote;
+import javax.ejb.Local;
 import persistence.Gamer;
 
 /**
@@ -13,7 +13,7 @@ import persistence.Gamer;
  * @author: Alexandre Bourdin & Jeremy Gabriele
  */
 
-@Remote
+@Local
 public interface PartieSessionRemote {
     
     public Gamer searchForGamer(String id);

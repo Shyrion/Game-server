@@ -9,6 +9,8 @@ import java.util.List;
 import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import javax.ejb.TransactionManagement;
+import javax.ejb.TransactionManagementType;
 import javax.persistence.*;
 import persistence.Gamer;
 
@@ -17,10 +19,11 @@ import persistence.Gamer;
  * @author: Alexandre Bourdin & Jeremy Gabriele
  */
 
-@Stateful
+@Stateful()
+@TransactionManagement(value=TransactionManagementType.CONTAINER)
 public class PartieSession implements PartieSessionRemote {
     
-    @javax.persistence.PersistenceContext(unitName="Game_server-ejbPU")
+    @javax.persistence.PersistenceContext(unitName="GS_persistence")
     private EntityManager em ;
     
     
@@ -28,6 +31,7 @@ public class PartieSession implements PartieSessionRemote {
         
     }
 
+    @Override
     public Gamer searchForGamer(String id){
         
         Gamer gamer = (Gamer)em.find(Gamer.class, id);
@@ -37,6 +41,7 @@ public class PartieSession implements PartieSessionRemote {
     
     // Dunno what is it for...
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    @Override
     public void remove(Object obj){
         Object mergedObj = em.merge(obj);
         em.remove(mergedObj);
@@ -47,6 +52,7 @@ public class PartieSession implements PartieSessionRemote {
         em.persist(obj);
     }
     
+    @Override
     public Gamer findGamerByLoginAndPassword(String login, String password){
         Gamer gamer=null;
         List res = em.createNamedQuery("findGamerByLogin").setParameter("login", login).setParameter("password", password).getResultList();
@@ -54,6 +60,7 @@ public class PartieSession implements PartieSessionRemote {
         return gamer;
     }
     
+    @Override
     public List findAllGamers(){
     
         List gamers = em.createNamedQuery("findAllGamers").getResultList();

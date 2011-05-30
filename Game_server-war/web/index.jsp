@@ -15,11 +15,8 @@
     </head>
     <body>
         <h1>Welcome to our Game server Webpage !</h1>
-        <p>If you want, you can either :</p>
-        <ul>
-            <li><a href="login.jsp">login</a></li>
-            <li><a href="register.jsp">register</a></li>
-        </ul>
+        <p>Please do not forget to <a href="login.jsp">login</a> first, or
+            <a href="register.jsp">register</a> if you didn't do it yet.
 
         <%
             
