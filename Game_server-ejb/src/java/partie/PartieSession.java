@@ -21,9 +21,9 @@ import persistence.Gamer;
 
 @Stateful()
 @TransactionManagement(value=TransactionManagementType.CONTAINER)
-public class PartieSession implements PartieSessionRemote {
+public class PartieSession implements PartieSessionLocal {
     
-    @javax.persistence.PersistenceContext(unitName="GS_persistence")
+    @javax.persistence.PersistenceContext(type=PersistenceContextType.TRANSACTION, unitName="GS_persistence")
     private EntityManager em ;
     
     
@@ -38,8 +38,6 @@ public class PartieSession implements PartieSessionRemote {
         return gamer;
     }
     
-    
-    // Dunno what is it for...
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     @Override
     public void remove(Object obj){
@@ -58,6 +56,12 @@ public class PartieSession implements PartieSessionRemote {
         List res = em.createNamedQuery("findGamerByLogin").setParameter("login", login).setParameter("password", password).getResultList();
         gamer = (Gamer) res.get(0);
         return gamer;
+    }
+    
+    @Override
+    public List findAllConnectedGamers(){
+        List res = em.createNamedQuery("findAllConnectedGamers").getResultList();
+        return res;
     }
     
     @Override

@@ -14,7 +14,7 @@ import persistence.Gamer;
  */
 
 @Local
-public interface PartieSessionRemote {
+public interface PartieSessionLocal {
     
     public Gamer searchForGamer(String id);
     
@@ -23,6 +23,8 @@ public interface PartieSessionRemote {
     public void persist(Object obj);
     
     public List findAllGamers();
+    
+    public List findAllConnectedGamers();
     
     public Gamer findGamerByLoginAndPassword(String log, String pass);
 }

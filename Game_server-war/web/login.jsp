@@ -4,6 +4,7 @@
     Author     : Alexandre Bourdin & Jeremy Gabriele
 --%>
 
+<%@page import="partie.PartieSessionLocal"%>
 <%@page import="javax.annotation.Resource"%>
 <%@page import="javax.jms.TextMessage"%>
 <%@page import="javax.jms.MessageProducer"%>
@@ -12,7 +13,6 @@
 <%@page import="javax.jms.Topic"%>
 <%@page import="javax.jms.ConnectionFactory"%>
 <%@page import="persistence.Gamer"%>
-<%@page import="partie.PartieSessionRemote"%>
 <%@page import="partie.PartieSession"%>
 <%@page import="javax.naming.InitialContext"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -21,9 +21,7 @@
 
 <%!
 
-    //@Resource(mappedName = "jms/ConnectionFactory")
     private static ConnectionFactory connectionFactory;
-    //@Resource(mappedName = "jms/Topic")
     private static Topic topic;
 
     Connection connection = null;
@@ -35,12 +33,13 @@
         try {
 
             InitialContext ic = new InitialContext();
-            connectionFactory = (ConnectionFactory) ic.lookup("jms/ConnectionFactory"); // Lookup fail !!!
+            connectionFactory = (ConnectionFactory) ic.lookup("jms/ConnectionFactory");
             topic = (Topic) ic.lookup("jms/Topic");
+            
 
             connection = connectionFactory.createConnection();
             jmsSession = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-            messageProducer = jmsSession.createProducer(topic);
+            messageProducer = jmsSession.createProducer((Topic) topic);
 
         } catch(Exception e) {
             e.printStackTrace();
@@ -58,16 +57,20 @@
         
         <script type="text/javascript">
             function openWindows() {
-                window.open("index.jsp","","height=250,\n\
+                window.open("club.jsp","","height=5000,\n\
                 width=400,status=no,location=no,\n\
                 toolbar=no,directories=no,menubar=no");
             }
         </script>
-
         
-        <h1>Login :</h1>
         
-        <form method="post">
+        <h1>Login page :</h1>
+        
+        <%
+            if (session.getAttribute("logged") == null) {
+        %>
+        
+        <form method="post" onsubmit=openWindows()>
             <table>
                 <tr>
                     <td><label for="login">Login</label></td>
@@ -85,6 +88,11 @@
 
             
         <%
+           } else {
+                %>
+                <a href="logout.jsp">logout</a>
+                <%
+           }
 
         String login = request.getParameter("login");
         String pwd = request.getParameter("pwd");
@@ -94,24 +102,29 @@
 
                 InitialContext ic = new InitialContext();
 
-                Object o = ic.lookup("java:global/Game_server/Game_server-ejb/PartieSession!partie.PartieSessionRemote");
-                PartieSessionRemote partieSession = (PartieSessionRemote) o;
+                Object o = ic.lookup("java:global/Game_server/Game_server-ejb/PartieSession!partie.PartieSessionLocal");
+                PartieSessionLocal partieSession = (PartieSessionLocal) o;
                 //Gamer gamer = partieSession.findGamerByLoginAndPassword(login, pwd);
                 
-                %>
-                <%=topic%>
-                <%
+                session.setAttribute("FTDisplay", null);
+                session.setAttribute("logged", true);
+                session.setAttribute("name", login);
                 
                 textMessage = jmsSession.createTextMessage();
-                textMessage.setStringProperty("gamerLogIn", "3");
-                textMessage.setText("Lool");
+                textMessage.setText(login);
                 
                 messageProducer.send(textMessage);
+                
+                %>
+                
+                <script>document.location.href="login.jsp"</script>
+                
+                <%
 
             } catch(Exception e) {
                 e.printStackTrace();
-                out.println("Login Failed : " + e.toString()); 
-            } 
+                out.println("Login Failed : " + e.toString() + " >> " + e.getCause()); 
+            }
         }
         %>
 

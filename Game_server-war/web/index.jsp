@@ -11,15 +11,30 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Game Server</title>
     </head>
     <body>
+        
+        <%
+            // Si l'user n'est pas deja log :
+            if (session.getAttribute("logged") == null){
+        %>
+        
         <h1>Welcome to our Game server Webpage !</h1>
+        
         <p>Please do not forget to <a href="login.jsp">login</a> first, or
             <a href="register.jsp">register</a> if you didn't do it yet.
 
         <%
+           } else {
+                session.setAttribute("FTDisplay", null);
+        %>
+        
+        <p>Hello <%=session.getAttribute("name")%>, feel free to have a look at
+            the <a href="club.jsp">club</a> page, or <a href="login.jsp">logout</a>.
             
+        <%
+           }
         %>
 
     </body>

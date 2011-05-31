@@ -1,10 +1,10 @@
 <%-- 
     Document   : register
-    Created on : 28 mai 2011, 18:28:38
+    Created on : 3 mai 2011, 18:28:38
     Author     : Alexandre Bourdin & Jeremy Gabriele
 --%>
+<%@page import="partie.PartieSessionLocal"%>
 <%@page import="persistence.Gamer"%>
-<%@page import="partie.PartieSessionRemote"%>
 <%@page import="partie.PartieSession"%>
 <%@page import="javax.naming.InitialContext"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -53,13 +53,11 @@
                         try {
 
                             InitialContext ic = new InitialContext();
-                            Object o = ic.lookup("java:global/Game_server/Game_server-ejb/PartieSession!partie.PartieSessionRemote");
-                            PartieSessionRemote partieSession = (PartieSessionRemote) o;
-                            %>
-                            <%= o %>
-                            <%
+                            Object o = ic.lookup("java:global/Game_server/Game_server-ejb/PartieSession!partie.PartieSessionLocal");
+                            PartieSessionLocal partieSession = (PartieSessionLocal) o;
+                            
                             Gamer gamer = new Gamer(login, pwd);
-                            partieSession.persist(gamer);
+                            //partieSession.persist(gamer);
                     %>
                     <p>
                         A new gamer has been added : 
@@ -68,7 +66,7 @@
                     <%
                         } catch(Exception e) {
                             e.printStackTrace();
-                            out.println("Create Gamer Failed : " + e.toString()); 
+                            out.println("Create Gamer Failed : " + e.toString() + " >> " + e.getCause()); 
                         }
                   } else {
                     err = "The 'Password' and 'Confirm Password' fields must match.";

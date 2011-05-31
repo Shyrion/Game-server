@@ -16,8 +16,9 @@ import javax.persistence.*;
 
 @NamedQueries(
     value={
-        @NamedQuery(name="findGamerByLoginAndPassword", query="select object(c) from Gamer c where c.login = :login AND c.password = :password"),
-        @NamedQuery(name="findAllGamers", query="SELECT object(c) FROM Gamer c")
+        @NamedQuery(name="findGamerByLoginAndPassword", query="select object(c) from Gamer c WHERE c.login = :login AND c.password = :password"),
+        @NamedQuery(name="findAllGamers", query="SELECT object(c) FROM Gamer c"),
+        @NamedQuery(name="findAllConnectedGamers", query="SELECT object(c) FROM Gamer c WHERE c.connected = true")
     })
 
 public class Gamer implements Serializable {
@@ -25,8 +26,9 @@ public class Gamer implements Serializable {
     private static final long serialVersionUID = 1L;
     
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
+    private boolean connected;
     private String login;
     private String pwd;
     private int score;
@@ -38,6 +40,7 @@ public class Gamer implements Serializable {
         this.login = login;
         this.pwd = pwd;
         this.score = 0;
+        this.connected = false;
     }
 
     public Long getId() {
@@ -74,6 +77,14 @@ public class Gamer implements Serializable {
     
     public void incScore(int inc){
         this.score += inc;
+    }
+    
+    public boolean isConnected() {
+        return this.connected;
+    }
+    
+    public void setConnected(boolean connected){
+        this.connected = connected;
     }
 
     @Override
